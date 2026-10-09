@@ -1,0 +1,21 @@
+services:
+  diagnostic-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: diagnostic-app
+    environment:
+      - LOG_LEVEL=INFO
+      - ENVIRONMENT=production
+    volumes:
+      - log-data:/app/logs
+    healthcheck:
+      test: ["CMD", "/app/health-check.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+volumes:
+  log-data:
+    driver: local
